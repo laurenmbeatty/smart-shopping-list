@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useCollection } from 'react-firebase-hooks/firestore'
 import {
   BrowserRouter as Router,
   Redirect,
@@ -8,15 +9,17 @@ import {
 import AddItem from './AddItem'
 import './App.css'
 import Footer from './components/Footer'
-import getToken from './lib/tokens'
-import List from './List'
 import Welcome from './components/Welcome'
 import { db } from './lib/firebase'
+import getToken from './lib/tokens'
+import List from './List'
 
 function App() {
   const [token, setToken] = useState(null)
   const [value, setValue] = useState('')
-  const [error, setError] = useState(false)
+  const [joinError, setError] = useState(false)
+  const list = token
+  const [results, loading, error] = useCollection(db.collection(list || 'user'))
 
   useEffect(() => {
     const user = localStorage.getItem('userToken')
@@ -51,6 +54,7 @@ function App() {
 
   return (
     <div className="App">
+      {error && <strong>Error: {JSON.stringify(error)}</strong>}
       <Router>
         {!token && <button onClick={() => handleClick()}>Login</button>}
         <Switch>
@@ -59,23 +63,27 @@ function App() {
               <Redirect to="/list" />
             ) : (
               <Welcome
-                error={error}
+                error={joinError}
                 onChange={(e) => handleChange(e)}
                 onSubmit={(e) => handleSubmit(e)}
                 token={value}
               />
             )}
           </Route>
-          {token && (
-            <>
-              <Route exact path="/list">
-                <List token={token} />
-              </Route>
-              <Route exact path="/add-item">
-                <AddItem token={token} />
-              </Route>
-            </>
-          )}
+          <Route exact path="/list">
+            {!token ? (
+              <Redirect to="/" />
+            ) : (
+              <List loading={loading} results={results} />
+            )}
+          </Route>
+          <Route exact path="/add-item">
+            {!token ? (
+              <Redirect to="/" />
+            ) : (
+              <AddItem token={token} results={results} />
+            )}
+          </Route>
         </Switch>
         {token && <Footer />}
       </Router>
