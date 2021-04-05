@@ -31,10 +31,10 @@ function App() {
               </Route>
               {token && (
                 <>
-                  <Route activeStyle={{fontWeight: 700}} exact path="/list">
+                  <Route exact path="/list">
                       <List />
                   </Route>
-                  <Route activeStyle={{fontWeight: 700}} exact path="/add-item">
+                  <Route exact path="/add-item">
                       <AddItem />
                   </Route>
                 </>
