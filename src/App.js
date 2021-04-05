@@ -1,11 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
+import React, { useEffect, useState } from 'react'
+import {
+  BrowserRouter as Router,
+  Redirect,
+  Route,
+  Switch,
+} from 'react-router-dom'
+import AddItem from './AddItem'
+import './App.css'
+import Footer from './components/Footer'
 import getToken from './lib/tokens'
-import AddItem from './AddItem';
-import './App.css';
-import Footer from './components/Footer';
-import List from './List';
-
+import List from './List'
 
 function App() {
   const [token, setToken] = useState(null)
@@ -19,31 +23,29 @@ function App() {
     setToken(localStorage.setItem('userToken', getToken()))
   }
 
-
-
   return (
     <div className="App">
       <Router>
-         {!token && <button onClick={() => handleClick()}>Login</button>}
-          <Switch>
-              <Route exact path="/">
-                  {token ? <Redirect to="/list"/> : <div>Home</div> }
+        {!token && <button onClick={() => handleClick()}>Login</button>}
+        <Switch>
+          <Route exact path="/">
+            {token ? <Redirect to="/list" /> : <div>Home</div>}
+          </Route>
+          {token && (
+            <>
+              <Route exact path="/list">
+                <List token={token} />
               </Route>
-              {token && (
-                <>
-                  <Route exact path="/list">
-                      <List />
-                  </Route>
-                  <Route exact path="/add-item">
-                      <AddItem />
-                  </Route>
-                </>
-              )}
-          </Switch>
+              <Route exact path="/add-item">
+                <AddItem token={token} />
+              </Route>
+            </>
+          )}
+        </Switch>
         {token && <Footer />}
       </Router>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
