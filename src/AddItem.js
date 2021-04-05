@@ -24,7 +24,9 @@ const AddItem = ({ results, token }) => {
   const handleSubmit = (e) => {
     e.preventDefault()
     const itemExists = checkItem(name.trim())
-    if (!itemExists) {
+    if (itemExists) {
+      setDuplicateError(true)
+    } else {
       writeToFirestore(list, {
         name,
         lastPurchasedDate: null,
@@ -32,8 +34,6 @@ const AddItem = ({ results, token }) => {
       })
       setName('')
       setDaysUntilPurchase(7)
-    } else {
-      setDuplicateError(true)
     }
   }
 
