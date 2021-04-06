@@ -1,4 +1,5 @@
 import React from 'react'
+import { differenceInHours } from 'date-fns'
 import { Link } from 'react-router-dom'
 import { timestamp, updateFirestore } from './lib/firebase'
 
@@ -12,6 +13,10 @@ const List = ({ loading, results, token }) => {
     })
   }
 
+  const checkHours = (lastPurchased) => {
+    return differenceInHours(lastPurchased, timestamp) < 24
+  }
+
   return (
     <div>
       {loading ? (
@@ -21,6 +26,16 @@ const List = ({ loading, results, token }) => {
           {results.docs.map((item) => (
             <li key={item.data().name}>
               <input
+                checked={
+                  item.data().lastPurchasedDate
+                    ? checkHours(item.data().lastPurchasedDate)
+                    : false
+                }
+                disabled={
+                  item.data().lastPurchasedDate
+                    ? checkHours(item.data().lastPurchasedDate)
+                    : false
+                }
                 id={item.id}
                 name={item.id}
                 type="checkbox"
