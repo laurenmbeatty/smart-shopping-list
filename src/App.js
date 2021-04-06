@@ -74,7 +74,7 @@ function App() {
             {!token ? (
               <Redirect to="/" />
             ) : (
-              <List loading={loading} results={results} />
+              <List loading={loading} results={results} token={token} />
             )}
           </Route>
           <Route exact path="/add-item">
