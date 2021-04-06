@@ -18,7 +18,7 @@ const List = ({ loading, results }) => {
           <NavLink exact to="/add-item">
             add an item
           </NavLink>
-          .
+          ?
         </p>
       )}
     </div>
