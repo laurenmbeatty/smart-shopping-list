@@ -1,4 +1,5 @@
 import React from 'react'
+import { NavLink } from 'react-router-dom'
 
 const List = ({ loading, results }) => {
   return (
@@ -12,7 +13,13 @@ const List = ({ loading, results }) => {
           ))}
         </ul>
       ) : (
-        <div>Your list is empty</div>
+        <p>
+          Your list is empty. Why don't you{' '}
+          <NavLink exact to="/add-item">
+            add an item
+          </NavLink>
+          .
+        </p>
       )}
     </div>
   )
