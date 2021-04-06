@@ -1,5 +1,5 @@
 import React from 'react'
-import { NavLink } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 const List = ({ loading, results }) => {
   return (
@@ -15,9 +15,9 @@ const List = ({ loading, results }) => {
       ) : (
         <p>
           Your list is empty. Why don't you{' '}
-          <NavLink exact to="/add-item">
+          <Link exact to="/add-item">
             add an item
-          </NavLink>
+          </Link>
           ?
         </p>
       )}
